@@ -120,3 +120,64 @@ def login(mobile_number, pin, users):
     if user is None or not user.checkPin(pin):
         raise AuthenticationError("Invalid mobile number or PIN.")
     return user
+
+
+####TRANSACTION####
+
+
+#send transaction
+from dataclasses import dataclass
+from typing import Dict, Any, Union
+
+#storing account details using data class instead of the usual class declaration
+@dataclass
+class account_details:
+    account_number: str
+    account_name: str
+    amount: float
+
+#enter account details 
+def validate_account(account_number: str, account_name: str) -> bool:
+    #validation via number or name
+    if not account_number or not account_name:
+        return False
+    return True
+
+#amount //checks if the amount is not zero or less than 0
+def validate_amount(amount: float) -> bool:
+    return amount > 0
+
+#generates a random 12 digit reference number
+def reference_number(sequence_value: int) -> str:
+    return f"{sequence_value:012d}"
+
+current_sequence = 1
+
+#confirmation //check transaction details via dictionary using the combination of string, float and boolean in the save file
+def confirm_transaction(details: account_details) -> Dict[str, Union{str, float, bool}]:
+    #confirmation step
+    is_valid = confirm_transaction(details)
+    #returns the status, the failed transaction message and no data
+    if not is_valid:
+        return {
+            "Status" : "Failed",
+            "Message": "Invalid Transaction",
+            "Data" : None
+        }
+    #displays transaction info using stored value from dictionary
+    transaction_info = {
+        "Status" : "Success",
+        "Reference Number" : reference_number(current_sequence),
+        "Account Name" : details.account_name,
+        "Account Number" : details.account_number,
+        "Amount" : details.amount,
+    }
+
+if __name__ == "__main__":
+    req = account_details(
+        account_number=
+        account_name=
+        amount=
+    )
+    result = process_transaction(req)
+    print(result)
