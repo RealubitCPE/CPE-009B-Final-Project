@@ -1,5 +1,5 @@
 STYLE_SHEET = """
-QWidget {
+{
     background-color: #f0f0f0;
     font-family: 'Segoe UI', Arial, sans-serif;
     font-size: 14px;
@@ -11,17 +11,26 @@ QLabel#titleLabel {
     font-weight: bold;
     margin-bottom: 20px;
     margin-top: 20px;
+    background: transparent;
 }
 
 QLabel#balanceLabel {
     font-size: 32px;
     font-weight: bold;
+    background: transparent;
+    border: none;
 }
 
 QLabel#subtitleLabel {
     font-size: 16px;
     color: #555555;
     margin-bottom: 10px;
+    background: transparent;
+    border: none;
+}
+
+QFrame.card QWidget, QFrame.card QFrame {
+    background-color: transparent;
 }
 
 QLineEdit, QComboBox {
