@@ -16,6 +16,8 @@ QLabel#titleLabel {
 QLabel#balanceLabel {
     font-size: 32px;
     font-weight: bold;
+    background-color: transparent;
+    border: none;
 }
 
 QLabel#subtitleLabel {
