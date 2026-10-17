@@ -1,4 +1,3 @@
-# Define shared Qt styling for windows, fields, buttons, and cards.
 STYLE_SHEET = """
 QWidget {
     background-color: #f0f0f0;
