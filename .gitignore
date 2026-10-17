@@ -1,0 +1,53 @@
+# Virtual Environments
+venv/
+venv_win/
+env/
+.env/
+.venv/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment Variables / Secrets
+.env
+.env.*
+!.env.example
+*.secret
+*.key
+*.pem
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE / Editor configuration
+.vscode/
+.idea/
+*.swp
+*.swo
+.agents/
+
+# PyQt6 / Qt UI files (if any are generated later)
+*.ui
+*.qm
+
+# Logs and databases
+*.log
+*.sqlite
+*.db
+
+# Local wallet data and verification output
+users.json
+transactions.json
+users.json.bak
+transactions.json.bak
+.verification/
+*.tmp
+users.json.pending

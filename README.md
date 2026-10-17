@@ -33,7 +33,7 @@ This application simulates a digital E-Wallet with a secure, PIN-based interface
 | :--- | :--- | :--- |
 | **Language** | `Python 3` | Core programming language. |
 | **Frontend** | `PyQt6` | Desktop GUI framework, styled with custom QSS. |
-| **Backend** | `Pending` | Database selection pending. Currently using mock data for UI testing. |
+| **Backend** | `Python` | Local JSON storage, salted PIN hashes, and validated wallet transactions in `backend/`. |
 
 ---
 
@@ -57,6 +57,42 @@ pip install PyQt6
 ```bash
 python main.py
 ```
+
+The terminal interface is available with `python cli.py`. Both interfaces use the
+same backend and local `users.json` and `transactions.json` files. New accounts
+start with a zero balance; use Cash In to fund the simulation.
+
+Run one wallet instance at a time. JSON storage is intended for this local
+simulation. An interrupted save leaves `users.json.pending` and blocks further
+wallet operations until the account and history files are reconciled.
+
+Five incorrect PIN attempts trigger a 30-second cooldown shared by login and
+transaction confirmation. This guard is local to the loaded account and resets
+when the application restarts.
+
+## Project Structure
+
+```text
+main.py                   Desktop launcher
+cli.py                    Terminal interface
+frontend/app.py           PyQt6 application and screen routing
+frontend/components/      Shared PIN input widget
+frontend/screens/         Login, registration, forms, confirmation, receipt
+frontend/style.py         Shared Qt stylesheet
+backend/                  Users, transaction rules, and JSON storage
+tests/                    Backend and offscreen UI regression checks
+user.py, storage.py       Compatibility imports for existing callers
+Transaction.py, utils/    Compatibility transaction imports
+```
+
+## Checks
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+UI tests use Qt's offscreen platform. Tests isolate wallet files in temporary
+directories and do not change local accounts or balances.
 
 <br>
 
