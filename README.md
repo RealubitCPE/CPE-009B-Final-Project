@@ -75,17 +75,37 @@ when the application restarts.
 ## Project Structure
 
 ```text
-main.py                   Desktop launcher
-cli.py                    Terminal interface
-assets/                   Branding (DIGICASH logo)
-frontend/app.py           PyQt6 application and screen routing
-frontend/components/      Shared PIN input widget
-frontend/screens/         Login, registration, forms, confirmation, receipt
-frontend/style.py         Shared Qt stylesheet
-backend/                  Users, transaction rules, and JSON storage
-tests/                    Backend and offscreen UI regression checks
-user.py, storage.py       Compatibility imports for existing callers
-Transaction.py, utils/    Compatibility transaction imports
+CPE-009B-Final-Project/
+├── assets/
+│   ├── digicash-logo.webp     Logo used in this README
+│   ├── digicash_logo.png      Logo (PNG)
+│   └── digicash.ico           Application icon
+├── backend/
+│   ├── __init__.py
+│   ├── storage.py             Local JSON storage (users, transactions)
+│   ├── transactions.py        Transaction rules and validation
+│   └── user.py                User accounts and salted PIN hashing
+├── frontend/
+│   ├── components/            Shared PIN input widget
+│   ├── screens/               Login, registration, forms, confirmation, receipt
+│   ├── __init__.py
+│   ├── app.py                 PyQt6 application and screen routing
+│   └── style.py               Shared Qt stylesheet
+├── tests/
+│   ├── test_backend.py        Backend regression checks
+│   └── test_ui.py             Offscreen UI regression checks
+├── utils/
+│   └── transactions.py        Compatibility transaction imports
+├── Transaction.py             Compatibility transaction import
+├── cli.py                     Terminal interface
+├── confirm_transaction.py     Transaction confirmation
+├── create_account.py          Account creation
+├── login.py                   Login
+├── main.menu.py               Main menu
+├── main.py                    Desktop launcher
+├── storage.py                 Compatibility import for existing callers
+├── user.py                    Compatibility import for existing callers
+└── README.md
 ```
 
 ## Checks
