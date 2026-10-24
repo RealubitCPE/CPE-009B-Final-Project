@@ -1,6 +1,8 @@
 <div align="center">
 
-# 💳 PIN-Based E-Wallet Desktop Application
+<img src="assets/digicash-logo.webp" alt="DIGICASH logo - Your money, just a tap away." width="260">
+
+# 💳 DIGICASH - PIN-Based E-Wallet Desktop Application
 **CPE-009B (OOP 2) Final Group Project**
 
 [![Python Version](https://img.shields.io/badge/Python-3.x-blue.svg?logo=python&logoColor=white)](#)
@@ -75,6 +77,7 @@ when the application restarts.
 ```text
 main.py                   Desktop launcher
 cli.py                    Terminal interface
+assets/                   Branding (DIGICASH logo)
 frontend/app.py           PyQt6 application and screen routing
 frontend/components/      Shared PIN input widget
 frontend/screens/         Login, registration, forms, confirmation, receipt
