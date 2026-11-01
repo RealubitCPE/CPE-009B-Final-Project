@@ -1,9 +1,11 @@
+# DIGICASH theme: light and warm, using the logo's green and dark brown.
+#   brown  #1c0a02   green  #7fdb5a   background  #f7f5f0
 STYLE_SHEET = """
 QWidget {
-    background-color: #f0f0f0;
+    background-color: #f7f5f0;
     font-family: 'Segoe UI', Arial, sans-serif;
     font-size: 14px;
-    color: #333333;
+    color: #1c0a02;
 }
 
 QLabel#titleLabel {
@@ -22,25 +24,63 @@ QLabel#balanceLabel {
 
 QLabel#subtitleLabel {
     font-size: 16px;
-    color: #555555;
+    color: #5a4a40;
     margin-bottom: 10px;
+}
+
+QLabel#errorLabel {
+    color: #c0392b;
 }
 
 QLineEdit, QComboBox {
     padding: 10px;
-    border: 1px solid #cccccc;
+    border: 1px solid #d9d2c5;
     border-radius: 4px;
     background-color: #ffffff;
     font-size: 16px;
 }
 
 QLineEdit:focus, QComboBox:focus {
-    border: 1px solid #195cbb;
+    border: 2px solid #3d9a20;
+    padding: 9px;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #ffffff;
+    border: 1px solid #d9d2c5;
+    selection-background-color: #eaf8e2;
+    selection-color: #1c0a02;
+    outline: 0;
+}
+
+QComboBox QAbstractItemView::item:hover,
+QComboBox QAbstractItemView::item:selected {
+    background-color: #eaf8e2;
+    color: #1c0a02;
+}
+
+/* Arrow area: flat, no native dark border, small brown triangle. */
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: center right;
+    width: 30px;
+    border: none;
+    background: transparent;
+}
+
+QComboBox::down-arrow {
+    image: none;
+    width: 0px;
+    height: 0px;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid #1c0a02;
+    margin-right: 10px;
 }
 
 QPushButton.primary {
-    background-color: #195cbb;
-    color: white;
+    background-color: #7fdb5a;
+    color: #1c0a02;
     border: none;
     border-radius: 4px;
     padding: 12px;
@@ -49,26 +89,39 @@ QPushButton.primary {
 }
 
 QPushButton.primary:hover {
-    background-color: #134896;
+    background-color: #6bc84a;
+}
+
+QPushButton.primary:pressed {
+    background-color: #5ab83c;
+}
+
+QPushButton.primary:disabled {
+    background-color: #d4eccb;
+    color: #7a6e66;
 }
 
 QPushButton.secondary {
-    background-color: #e1e1e1;
-    color: #333333;
-    border: 1px solid #cccccc;
+    background-color: #ffffff;
+    color: #1c0a02;
+    border: 1px solid #d9d2c5;
     border-radius: 4px;
     padding: 12px;
     font-size: 16px;
 }
 
 QPushButton.secondary:hover {
-    background-color: #d0d0d0;
+    background-color: #efeadf;
+}
+
+QPushButton.secondary:disabled {
+    color: #7a6e66;
 }
 
 QPushButton.menuButton {
-    background-color: #e1e1e1;
-    color: #000000;
-    border: 1px solid #cccccc;
+    background-color: #ffffff;
+    color: #1c0a02;
+    border: 1px solid #d9d2c5;
     border-radius: 4px;
     padding: 20px;
     font-size: 18px;
@@ -76,12 +129,13 @@ QPushButton.menuButton {
 }
 
 QPushButton.menuButton:hover {
-    background-color: #d0d0d0;
+    background-color: #eaf8e2;
+    border: 1px solid #7fdb5a;
 }
 
 QFrame.card {
     background-color: #ffffff;
-    border: 1px solid #cccccc;
+    border: 1px solid #e3ddd2;
     border-radius: 4px;
     padding: 20px;
 }
