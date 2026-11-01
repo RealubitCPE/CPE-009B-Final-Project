@@ -4,12 +4,13 @@ from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal, InvalidOperation
 import math
+import secrets
 
 __all__ = [
     "PAYMENT_STRUCTURE", "payment_details", "account_details", "deposit_details",
     "withdraw_details", "confirm_payment", "confirm_transaction", "confirm_deposit",
     "confirm_withdraw", "validate_payment", "validate_account", "validate_amount",
-    "generate_reference_number", "create_receipt", "next_sequence",
+    "generate_reference_number", "generate_reference_code", "create_receipt", "next_sequence",
 ]
 
 global_sequence = 1
@@ -65,6 +66,12 @@ def generate_reference_number(transaction_type, sequence_value):
     return f"{transaction_type[:3].upper()}-{sequence_value:09d}"
 
 
+def generate_reference_code():
+    """Make a random reference number like 4938-2061-5527 (separate from the transaction number)."""
+    digits = f"{secrets.randbelow(10**12):012d}"
+    return "-".join(digits[i:i + 4] for i in range(0, 12, 4))
+
+
 def create_receipt(transaction_type, name, amount, account_details, sequence_value=None):
     """Validate receipt fields and assemble the receipt."""
     amount = amount_decimal(amount)
@@ -76,6 +83,7 @@ def create_receipt(transaction_type, name, amount, account_details, sequence_val
         "Status": "Success",
         "Transaction Type": transaction_type,
         "Transaction Number": generate_reference_number(transaction_type, sequence),
+        "Reference Number": generate_reference_code(),
         "Name": name,
         "Amount": float(amount),
         "Account Details": account_details,
