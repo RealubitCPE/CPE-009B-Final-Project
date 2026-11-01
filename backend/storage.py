@@ -7,7 +7,7 @@ from datetime import date
 
 from .transactions import (
     amount_decimal, confirm_deposit, confirm_payment, confirm_transaction,
-    confirm_withdraw, required_text,
+    confirm_withdraw, generate_reference_code, required_text,
 )
 from .user import User, find_user, register
 
@@ -296,22 +296,31 @@ def register_and_save(name, mobile_number, pin, users):
 
 
 # Actions: validate, change balances, persist both files, then return the receipt.
-def _process(user, users, txn_type, details, confirm, recipient=None):
+def _process(user, users, txn_type, details, confirm, recipient=None, recipient_mobile=None):
     """Validate an action, update balances, and save its records."""
     if not any(candidate is user for candidate in users):
         raise ValueError("The active user is not registered in this session.")
     transactions = load_transactions()
     sequence = _next_id(transactions)
     receipt = confirm(details, sequence)
+    # The reference number must be unique across saved transactions.
+    used = {item.get("reference_number") for item in transactions}
+    while receipt["Reference Number"] in used:
+        receipt["Reference Number"] = generate_reference_code()
     amount = amount_decimal(details.amount)
     txn = _record(user.mobile_number, txn_type, amount, sequence)
+    txn["reference_number"] = receipt["Reference Number"]
     records = [txn]
     if recipient is not None:
         txn["recipient_mobile_number"] = recipient.mobile_number
         received = _record(recipient.mobile_number, "receive", amount, sequence + 1)
         received["sender_mobile_number"] = user.mobile_number
         received["related_transaction_id"] = sequence
+        received["reference_number"] = receipt["Reference Number"]
         records.append(received)
+    elif recipient_mobile is not None:
+        # Recipient has no account here: the money leaves the sender only.
+        txn["recipient_mobile_number"] = recipient_mobile
 
     affected = [user] if recipient is None else [user, recipient]
     balances = [(person, person.balance) for person in affected]
@@ -343,15 +352,17 @@ def withdraw_and_save(user, details, users):
 
 
 def send_and_save(user, details, users):
-    """Validate the recipient and persist a transfer."""
-    # Validate required fields before resolving the registered recipient.
-    required_text(details.account_number, "Account number")
+    """Persist a transfer; the recipient does not need an account here."""
+    number = required_text(details.account_number, "Account number")
     name = required_text(details.account_name, "Account name")
-    recipient = find_user(details.account_number, users)
-    if recipient is None:
-        raise ValueError("Recipient is not registered.")
-    if recipient.mobile_number == user.mobile_number:
+    mobile = User.validate_mobile(number)
+    if mobile == user.mobile_number:
         raise ValueError("Cannot send money to your own account.")
+    recipient = find_user(mobile, users)
+    if recipient is None:
+        # Not registered: deduct from the sender and record the transfer.
+        return _process(user, users, "send", details, confirm_transaction, recipient_mobile=mobile)
+    # A registered number must still match the registered name.
     if " ".join(name.split()).casefold() != " ".join(recipient.name.split()).casefold():
         raise ValueError("Recipient name does not match the registered account.")
     return _process(user, users, "send", details, confirm_transaction, recipient)
@@ -360,4 +371,3 @@ def send_and_save(user, details, users):
 def pay_and_save(user, details, users):
     """Process and persist a bill payment."""
     return _process(user, users, "payment", details, confirm_payment)
-
