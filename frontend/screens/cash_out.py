@@ -1,8 +1,10 @@
 from PyQt6.QtWidgets import QComboBox
 
 from backend.transactions import withdraw_details
-from frontend.screens.cash_in import CASH_IN_SOURCES
 from frontend.screens.transaction_form import TransactionFormScreen
+
+# Where money can go. Edit this list to add or remove choices.
+CASH_OUT_DESTINATIONS = ["Bank", "Cash-out outlet", "Convenience Store"]
 
 
 class CashOutScreen(TransactionFormScreen):
@@ -24,7 +26,7 @@ class CashOutScreen(TransactionFormScreen):
         """Use a dropdown for the destination and text fields for anything else."""
         if key == "destination":
             combo = QComboBox()
-            combo.addItems(CASH_IN_SOURCES)
+            combo.addItems(CASH_OUT_DESTINATIONS)
             combo.setPlaceholderText(placeholder)
             return combo
         return super().create_input(key, placeholder)
