@@ -18,7 +18,7 @@ from frontend.screens.receipt import ReceiptScreen
 from frontend.screens.send_money import SendMoneyScreen
 from frontend.style import STYLE_SHEET
 
-ICON_PATH = str(Path(__file__).resolve().parent.parent / "assets" / "digicash.ico")
+ICON_PATH = str(Path(__file__).resolve().parent.parent / "assets" / "digicash-icon.ico")
 
 
 class EWalletApp(QMainWindow):
@@ -26,6 +26,7 @@ class EWalletApp(QMainWindow):
         """Load account state and create the wallet screen stack."""
         super().__init__()
         self.setWindowTitle("DIGICASH")
+        self.setWindowIcon(QIcon(ICON_PATH))
         self.setFixedSize(450, 750)
         self.setStyleSheet(STYLE_SHEET)
         self.current_user = None
