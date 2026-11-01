@@ -1,7 +1,12 @@
+from pathlib import Path
+
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton
 from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QPixmap
 from backend.storage import StorageError
 from frontend.components.pin_input import PinInputWidget
+
+LOGO_PATH = Path(__file__).resolve().parents[2] / "assets" / "digicash-logo.png"
 
 class LoginScreen(QWidget):
     def __init__(self, app_main):
@@ -14,6 +19,18 @@ class LoginScreen(QWidget):
         """Build the screen layout and connect its actions."""
         layout = QVBoxLayout()
         layout.setContentsMargins(40, 40, 40, 40)
+
+        pixmap = QPixmap(str(LOGO_PATH))
+        if not pixmap.isNull():
+            self.logo_label = QLabel()
+            self.logo_label.setPixmap(
+                pixmap.scaledToWidth(
+                    130, Qt.TransformationMode.SmoothTransformation
+                )
+            )
+            self.logo_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            self.logo_label.setAccessibleName("DigiCash logo")
+            layout.addWidget(self.logo_label)
 
         title = QLabel("User Login")
         title.setObjectName("titleLabel")
