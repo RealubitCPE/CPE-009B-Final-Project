@@ -13,9 +13,12 @@ class MainMenuScreen(QWidget):
         layout = QVBoxLayout()
         layout.setContentsMargins(40, 40, 40, 40)
 
-        title = QLabel("Main Menu")
-        title.setObjectName("titleLabel")
-        layout.addWidget(title)
+        self.title_label = QLabel("Welcome")
+        self.title_label.setObjectName("titleLabel")
+        # Names are user-entered: show them as plain text and wrap long ones.
+        self.title_label.setTextFormat(Qt.TextFormat.PlainText)
+        self.title_label.setWordWrap(True)
+        layout.addWidget(self.title_label)
 
         card = QFrame()
         card.setProperty("class", "card")
@@ -69,7 +72,8 @@ class MainMenuScreen(QWidget):
         self.setLayout(layout)
 
     def refresh(self):
-        """Display the current account balance, or zero when signed out."""
+        """Display the welcome message and balance, or defaults when signed out."""
         user = self.app_main.current_user
+        self.title_label.setText(f"Welcome, {user.name}" if user is not None else "Welcome")
         balance = user.balance if user is not None else 0
         self.balance_label.setText(f"PHP {balance:,.2f}")
