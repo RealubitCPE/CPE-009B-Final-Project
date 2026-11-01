@@ -24,13 +24,13 @@ class PinInputWidget(QWidget):
 
             line_edit.setStyleSheet("""
                 QLineEdit {
-                    background-color: #241733;
-                    color: #f3e6d0;
-                    border: 1px solid #3b2757;
-                    border-radius: 8px;
+                    background-color: #ffffff;
+                    color: #1c0a02;
+                    border: 1px solid #bfb7a8;
+                    border-radius: 4px;
                 }
                 QLineEdit:focus {
-                    border: 2px solid #ff7a1a;
+                    border: 2px solid #3d9a20;
                 }
             """)
 
