@@ -44,6 +44,7 @@ class ReceiptScreen(QWidget):
             ("Amount", f"{receipt['Amount']:,.2f}"),
             ("Account Details", receipt["Account Details"]),
             ("Transaction No.", receipt["Transaction Number"]),
+            ("Reference No.", receipt["Reference Number"]),
             ("Date", stamp.strftime("%m/%d/%Y")),
             ("Time", stamp.strftime("%I:%M %p")),
         ]
