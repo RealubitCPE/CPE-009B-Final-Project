@@ -3,7 +3,7 @@
 import json
 import os
 import tempfile
-from datetime import date
+from datetime import date, datetime
 
 from .transactions import (
     amount_decimal, confirm_deposit, confirm_payment, confirm_transaction,
@@ -172,6 +172,8 @@ def _validate_transactions(data):
             required_text(item["type"], "Transaction type")
             amount_decimal(item["amount"])
             date.fromisoformat(item["date"])
+            if "time" in item:  # Older records have no time; it is optional.
+                datetime.strptime(item["time"], "%H:%M:%S")
     except (KeyError, TypeError, ValueError, AttributeError) as error:
         raise StorageError("transactions.json is not in the expected format.") from error
     return data
@@ -200,14 +202,16 @@ def next_transaction_id():
     return _next_id(load_transactions())
 
 
-def _record(mobile_number, txn_type, amount, transaction_id):
+def _record(mobile_number, txn_type, amount, transaction_id, stamp=None):
     """Build one validated transaction record."""
+    stamp = stamp or datetime.now()
     return {
         "transaction_id": transaction_id,
         "mobile_number": User.validate_mobile(mobile_number),
         "type": required_text(txn_type, "Transaction type"),
         "amount": float(amount_decimal(amount)),
-        "date": date.today().isoformat(),
+        "date": stamp.date().isoformat(),
+        "time": stamp.strftime("%H:%M:%S"),
     }
 
 
@@ -308,12 +312,14 @@ def _process(user, users, txn_type, details, confirm, recipient=None, recipient_
     while receipt["Reference Number"] in used:
         receipt["Reference Number"] = generate_reference_code()
     amount = amount_decimal(details.amount)
-    txn = _record(user.mobile_number, txn_type, amount, sequence)
+    # Use the receipt's date and time so the saved record always matches it.
+    stamp = datetime.strptime(f"{receipt['Date']} {receipt['Time']}", "%Y-%m-%d %H:%M:%S")
+    txn = _record(user.mobile_number, txn_type, amount, sequence, stamp)
     txn["reference_number"] = receipt["Reference Number"]
     records = [txn]
     if recipient is not None:
         txn["recipient_mobile_number"] = recipient.mobile_number
-        received = _record(recipient.mobile_number, "receive", amount, sequence + 1)
+        received = _record(recipient.mobile_number, "receive", amount, sequence + 1, stamp)
         received["sender_mobile_number"] = user.mobile_number
         received["related_transaction_id"] = sequence
         received["reference_number"] = receipt["Reference Number"]
