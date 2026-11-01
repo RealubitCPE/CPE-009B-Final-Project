@@ -1,4 +1,7 @@
+from PyQt6.QtWidgets import QComboBox
+
 from backend.transactions import withdraw_details
+from frontend.screens.cash_in import CASH_IN_SOURCES
 from frontend.screens.transaction_form import TransactionFormScreen
 
 
@@ -7,9 +10,29 @@ class CashOutScreen(TransactionFormScreen):
     title = "Cash Out"
     action_text = "Cash Out"
     fields = [
-        ("destination", "Destination", "Bank or cash-out outlet"),
+        ("destination", "Destination", "Select a destination"),
         ("number", "Account Number", "000-000-000"),
     ]
+
+    def __init__(self, app_main):
+        """Build the form and start with no destination selected."""
+        super().__init__(app_main)
+        self.destination_combo = self.inputs["destination"]
+        self.destination_combo.setCurrentIndex(-1)
+
+    def create_input(self, key, placeholder):
+        """Use a dropdown for the destination and text fields for anything else."""
+        if key == "destination":
+            combo = QComboBox()
+            combo.addItems(CASH_IN_SOURCES)
+            combo.setPlaceholderText(placeholder)
+            return combo
+        return super().create_input(key, placeholder)
+
+    def reset(self):
+        """Clear the form and leave the destination unselected."""
+        super().reset()
+        self.destination_combo.setCurrentIndex(-1)
 
     def build_details(self, values, amount):
         """Build withdrawal details using the signed-in account and destination."""
