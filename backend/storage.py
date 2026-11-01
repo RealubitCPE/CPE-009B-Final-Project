@@ -360,3 +360,4 @@ def send_and_save(user, details, users):
 def pay_and_save(user, details, users):
     """Process and persist a bill payment."""
     return _process(user, users, "payment", details, confirm_payment)
+
