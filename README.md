@@ -76,37 +76,46 @@ when the application restarts.
 
 ```text
 CPE-009B-Final-Project/
-├── assets/
-│   ├── digicash-logo.webp     Logo used in this README
-│   ├── digicash_logo.png      Logo (PNG)
-│   └── digicash.ico           Application icon
-├── backend/
-│   ├── __init__.py
-│   ├── storage.py             Local JSON storage (users, transactions)
-│   ├── transactions.py        Transaction rules and validation
-│   └── user.py                User accounts and salted PIN hashing
-├── frontend/
-│   ├── components/            Shared PIN input widget
-│   ├── screens/               Login, registration, forms, confirmation, receipt
-│   ├── __init__.py
-│   ├── app.py                 PyQt6 application and screen routing
-│   └── style.py               Shared Qt stylesheet
-├── tests/
-│   ├── test_backend.py        Backend regression checks
-│   └── test_ui.py             Offscreen UI regression checks
-├── utils/
-│   └── transactions.py        Compatibility transaction imports
-├── Transaction.py             Compatibility transaction import
-├── cli.py                     Terminal interface
-├── confirm_transaction.py     Transaction confirmation
-├── create_account.py          Account creation
-├── login.py                   Login
-├── main.menu.py               Main menu
-├── main.py                    Desktop launcher
-├── storage.py                 Compatibility import for existing callers
-├── user.py                    Compatibility import for existing callers
-└── README.md
+|-- assets/                      Images and application icon
+|   |-- Digicash logo.png
+|   |-- digicash-icon.ico
+|   `-- digicash-logo.webp
+|-- backend/                     Account rules and local persistence
+|   |-- __init__.py
+|   |-- storage.py
+|   |-- transactions.py
+|   `-- user.py
+|-- frontend/                    Active desktop interface
+|   |-- components/              Shared PIN widget
+|   |-- screens/                 Active wallet screens
+|   |-- __init__.py
+|   |-- app.py                   Qt window and screen routing
+|   `-- style.py                 Shared Qt stylesheet
+|-- tests/                       Backend and offscreen UI checks
+|   |-- test_backend.py
+|   `-- test_ui.py
+|-- archive/
+|   `-- ui_drafts/               Historical UI variants; not loaded by the app
+|       |-- confirm_transaction.py
+|       |-- create_account.py
+|       |-- login.py
+|       `-- main_menu.py
+|-- utils/
+|   `-- transactions.py          Legacy transaction import
+|-- .gitignore
+|-- cli.py                       Terminal entry point
+|-- main.py                      Desktop entry point
+|-- storage.py                   Legacy storage import
+|-- Transaction.py               Legacy transaction import
+|-- user.py                      Legacy account import
+`-- README.md
 ```
+
+The application loads screens from `frontend/screens/`. Older standalone UI
+drafts are kept in `archive/ui_drafts/` for reference and are not supported
+entry points. Root compatibility modules remain so existing imports keep
+working. Start the desktop app with `python main.py` or the terminal app
+with `python cli.py`.
 
 ## Checks
 
